@@ -4,10 +4,14 @@ import { HumanMessage } from "@langchain/core/messages";
 import busboy from "busboy";
 import { createWriteStream, WriteStream } from "fs";
 import path from "path";
+import { toNodeHandler } from "better-auth/node";
+import { auth } from "./auth";
 
 const app = express();
 app.use(express.json());
 const port = 3001;
+
+app.all('/api/auth/{*any}', toNodeHandler(auth));
 
 app.get("/", (req: Request, res: Response) => {
 	res.send("Hello World!");
