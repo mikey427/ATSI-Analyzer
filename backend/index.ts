@@ -1,4 +1,5 @@
 import express, { Request, Response } from "express";
+import cors from "cors";
 import { agent } from "./ai/graph";
 import { HumanMessage } from "@langchain/core/messages";
 import busboy from "busboy";
@@ -8,6 +9,7 @@ import { toNodeHandler } from "better-auth/node";
 import { auth } from "./lib/auth";
 
 const app = express();
+app.use(cors({ origin: "http://localhost:5173", credentials: true }));
 app.use(express.json());
 const port = 3001;
 

@@ -12,4 +12,9 @@ export default defineConfig({
 			$lib: path.resolve("./src/lib"),
 		},
 	},
+	server: {
+		proxy: {
+			"/api": "http://localhost:3001",
+		},
+	},
 });
