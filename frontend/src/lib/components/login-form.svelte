@@ -8,8 +8,26 @@
 		Label as FieldLabel,
 		Description as FieldDescription,
 	} from "$lib/components/ui/field/index.js";
+	import { authClient } from "$lib/auth";
+	import { navigate } from "$lib/router";
+
 
 	const id = $props.id();
+
+	let email = $state("");
+	let password = $state("");
+
+
+	async function handleSubmit(event: SubmitEvent) {
+		event.preventDefault();
+
+		const res = await authClient.signIn.email({email, password})
+		console.log("res: ", res)
+
+		if(res.error === null) {
+			navigate("/")
+		}
+	}
 </script>
 
 <Card.Root class="mx-auto w-full max-w-sm">
@@ -18,11 +36,11 @@
 		<Card.Description>Enter your email below to login to your account</Card.Description>
 	</Card.Header>
 	<Card.Content>
-		<form>
+		<form onsubmit={handleSubmit}>
 			<FieldGroup>
 				<Field>
 					<FieldLabel for="email-{id}">Email</FieldLabel>
-					<Input id="email-{id}" type="email" placeholder="m@example.com" required />
+					<Input id="email-{id}" type="email" bind:value={email} placeholder="m@example.com" required />
 				</Field>
 				<Field>
 					<div class="flex items-center">
@@ -31,7 +49,7 @@
 							Forgot your password?
 						</a>
 					</div>
-					<Input id="password-{id}" type="password" required />
+					<Input id="password-{id}" type="password" bind:value={password} required />
 				</Field>
 				<Field>
 					<Button type="submit" class="w-full">Login</Button>

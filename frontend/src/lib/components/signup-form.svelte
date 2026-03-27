@@ -5,6 +5,7 @@
 	import { Input } from "$lib/components/ui/input/index.js";
 	import type { ComponentProps } from "svelte";
 	import { authClient } from "$lib/auth";
+	import { navigate } from "$lib/router";
 
 	let { ...restProps }: ComponentProps<typeof Card.Root> = $props();
 
@@ -25,6 +26,11 @@
 			passwordConf
 		})
 		const res = await authClient.signUp.email({name, email, password});
+
+		if(res.error === null) {
+			navigate("/")
+		}
+		
 
 		console.log("res: ", res);
 	}
@@ -65,7 +71,7 @@
 						<Button type="submit">Create Account</Button>
 						<Button variant="outline" type="button">Sign up with Google</Button>
 						<Field.Description class="px-6 text-center">
-							Already have an account? <a href="#/">Sign in</a>
+							Already have an account? <a href="/login">Sign in</a>
 						</Field.Description>
 					</Field.Field>
 				</Field.Group>
